@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:spotergs/modules/home/pages/home_page.dart';
+import 'package:get/instance_manager.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Initializer {
+  static Future<void> init() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    // Aqui você pode adicionar suas inicializações de dependências
+    // Exemplo usando Get.put():
+    // Get.put<MinhaClasse>(MinhaClasse());
+    // Get.lazyPut(() => MeuServico());
+
+    // Carregar informações do pacote
+    try {
+      await Get.putAsync(() async => PackageInfo.fromPlatform());
+    } catch (e) {
+      print('Error loading package info: $e');
+    }
   }
 }
