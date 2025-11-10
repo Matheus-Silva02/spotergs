@@ -1,0 +1,258 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/material.dart';
+import 'app_colors.dart';
+
+const String primaryFont = 'HankenGrotesk';
+const String secondaryFont = 'Lato';
+
+abstract class AppTextStyles {
+  static TextStyle headLineExtraLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w400,
+    height: 40,
+    fontSize: 40,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle headLineLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w400,
+    height: 10,
+    fontSize: 32,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle headLineMedium = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w400,
+    height: 36/28,
+    fontSize: 28,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle headLineSmall = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w400,
+    height: 32 / 24,
+    fontSize: 24,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle titleLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w400,
+    height: 28 / 22,
+    fontSize: 22,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle titleMedium = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w500,
+    height: 24 / 16,
+    fontSize: 16,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle titleSmall = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w500,
+    height: 20 / 14,
+    fontSize: 14,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle labelLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
+    height: 20 / 14,
+    letterSpacing: 0.3,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle labelMedium = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w500,
+    fontSize: 12,
+    height: 16 / 12,
+    letterSpacing: 0.3,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle labelSmall = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w500,
+    fontSize: 11,
+    height: 16 / 11,
+    letterSpacing: 0.3,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle bodyLarge = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+    height: 24 / 16,
+    letterSpacing: 0.5,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle bodyMedium = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    height: 20 / 14,
+    letterSpacing: 0.25,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle bodySmall = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    height: 16 / 12,
+    letterSpacing: 0.4,
+    color: AppColors.black,
+  );
+
+  static TextStyle bodyExtraSmall = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w400,
+    fontSize: 10,
+    height: 16,
+    letterSpacing: 0.25,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryHeadlineExtraLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 40,
+    height: 40,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryHeadlineLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 32,
+    height: 40,
+    letterSpacing: 0,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryHeadlineMedium = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 28,
+    height: 36 / 28,
+    letterSpacing: 0,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryHeadlineSmall = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 24,
+    height: 32 / 24,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryTitleLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 22,
+    height: 28 / 22,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryTitleMedium = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+    height: 24 / 16,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryTitleSmall = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryLabelLarge = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    height: 20 / 14,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryLabelMedium = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 12,
+    height: 16 / 12,
+    letterSpacing: 0.1,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryLabelSmall = TextStyle(
+    fontFamily: primaryFont,
+    fontWeight: FontWeight.w800,
+    fontSize: 13,
+    letterSpacing: 0.1,
+    color: Colors.black,
+  );
+
+  static TextStyle secondaryBodyLarge = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w800,
+    fontSize: 16,
+    letterSpacing: 0.25,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryBodyMedium = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    height: 20 / 14,
+    letterSpacing: 0.25,
+    color: AppColors.neutral.shade900,
+  );
+
+  static TextStyle secondaryBodySmall = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 12,
+    height: 16 / 12,
+    letterSpacing: 0.4,
+    color: Colors.black,
+  );
+
+  static TextStyle secondaryBodyExtraSmall = TextStyle(
+    fontFamily: secondaryFont,
+    fontWeight: FontWeight.w600,
+    fontSize: 10,
+    height: 16,
+    letterSpacing: 0.25,
+    color: AppColors.neutral.shade900,
+  );
+}
