@@ -4,6 +4,6 @@ import 'package:spotergs/app/modules/register/controllers/register_controller.da
 class RegisterBinding implements Bindings{
   @override
   void dependencies() {
-   Get.put<RegisterController>(RegisterController());
+   Get.put<RegisterController>(RegisterController(repository: Get.find()));
   }
 }
