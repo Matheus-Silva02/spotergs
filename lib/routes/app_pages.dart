@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:spotergs/app/modules/login/bindings/login_binding.dart';
+import 'package:spotergs/app/modules/login/pages/login_page.dart';
 import 'package:spotergs/app/modules/register/bindings/register_binding.dart';
 import 'package:spotergs/app/modules/register/pages/register_page.dart';
 
@@ -13,10 +15,16 @@ class AppPages {
       page: () => const SplashScreenPage(),
       binding: SplashBinding(),
     ),
-   GetPage(
-    name: AppRoutes.register,
-    page: () => const RegisterPage(),
-      binding: RegisterBinding(),)
+    GetPage(
+      name: AppRoutes.register,
+      page: () => const RegisterPage(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginPage(),
+      binding: LoginBinding(),
+    ),
   ];
 }
 

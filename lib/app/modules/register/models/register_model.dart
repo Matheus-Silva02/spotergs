@@ -8,7 +8,7 @@ class RegisterModel with _$RegisterModel {
 
   factory RegisterModel(
     {
-      required String userName,
+      required String name,
       required String password,
       required String email,
     }

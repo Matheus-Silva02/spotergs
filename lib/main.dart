@@ -34,7 +34,7 @@ class FlutterApp extends StatelessWidget {
       title: Consts.appName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      initialRoute: AppRoutes.register,
+      initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
       defaultTransition: Transition.cupertinoDialog,
       locale: const Locale('pt', 'BR'),

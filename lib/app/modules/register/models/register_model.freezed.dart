@@ -21,7 +21,7 @@ RegisterModel _$RegisterModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RegisterModel {
-  String get userName => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
 
@@ -42,7 +42,7 @@ abstract class $RegisterModelCopyWith<$Res> {
     $Res Function(RegisterModel) then,
   ) = _$RegisterModelCopyWithImpl<$Res, RegisterModel>;
   @useResult
-  $Res call({String userName, String password, String email});
+  $Res call({String name, String password, String email});
 }
 
 /// @nodoc
@@ -60,16 +60,16 @@ class _$RegisterModelCopyWithImpl<$Res, $Val extends RegisterModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userName = null,
+    Object? name = null,
     Object? password = null,
     Object? email = null,
   }) {
     return _then(
       _value.copyWith(
-            userName:
-                null == userName
-                    ? _value.userName
-                    : userName // ignore: cast_nullable_to_non_nullable
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
                         as String,
             password:
                 null == password
@@ -96,7 +96,7 @@ abstract class _$$RegisterModelImplCopyWith<$Res>
   ) = __$$RegisterModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String userName, String password, String email});
+  $Res call({String name, String password, String email});
 }
 
 /// @nodoc
@@ -113,16 +113,16 @@ class __$$RegisterModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userName = null,
+    Object? name = null,
     Object? password = null,
     Object? email = null,
   }) {
     return _then(
       _$RegisterModelImpl(
-        userName:
-            null == userName
-                ? _value.userName
-                : userName // ignore: cast_nullable_to_non_nullable
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
                     as String,
         password:
             null == password
@@ -143,7 +143,7 @@ class __$$RegisterModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RegisterModelImpl implements _RegisterModel {
   _$RegisterModelImpl({
-    required this.userName,
+    required this.name,
     required this.password,
     required this.email,
   });
@@ -152,7 +152,7 @@ class _$RegisterModelImpl implements _RegisterModel {
       _$$RegisterModelImplFromJson(json);
 
   @override
-  final String userName;
+  final String name;
   @override
   final String password;
   @override
@@ -160,7 +160,7 @@ class _$RegisterModelImpl implements _RegisterModel {
 
   @override
   String toString() {
-    return 'RegisterModel(userName: $userName, password: $password, email: $email)';
+    return 'RegisterModel(name: $name, password: $password, email: $email)';
   }
 
   @override
@@ -168,8 +168,7 @@ class _$RegisterModelImpl implements _RegisterModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegisterModelImpl &&
-            (identical(other.userName, userName) ||
-                other.userName == userName) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.email, email) || other.email == email));
@@ -177,7 +176,7 @@ class _$RegisterModelImpl implements _RegisterModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, userName, password, email);
+  int get hashCode => Object.hash(runtimeType, name, password, email);
 
   /// Create a copy of RegisterModel
   /// with the given fields replaced by the non-null parameter values.
@@ -195,7 +194,7 @@ class _$RegisterModelImpl implements _RegisterModel {
 
 abstract class _RegisterModel implements RegisterModel {
   factory _RegisterModel({
-    required final String userName,
+    required final String name,
     required final String password,
     required final String email,
   }) = _$RegisterModelImpl;
@@ -204,7 +203,7 @@ abstract class _RegisterModel implements RegisterModel {
       _$RegisterModelImpl.fromJson;
 
   @override
-  String get userName;
+  String get name;
   @override
   String get password;
   @override

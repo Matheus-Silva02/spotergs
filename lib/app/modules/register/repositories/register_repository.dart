@@ -6,11 +6,15 @@ import 'package:spotergs/app/modules/register/models/register_model.dart';
 
 class RegisterRepository {
   
-Future<http.Response> registerUser(String userName, String password, String email) async{
+Future<http.Response> registerUser(String name, String password, String email) async{
   final uri = Uri.parse('${Consts.baseUrlBackend}/api/Auth/register');
-  RegisterModel registerModel = RegisterModel(userName: userName, password: password, email: email,);
+  RegisterModel registerModel = RegisterModel(name: name, password: password, email: email,);
   try {
-     var response = await http.post(uri,body: registerModel);
+     var response = await http.post(
+       uri,
+       headers: {'Content-Type': 'application/json'},
+       body: jsonEncode(registerModel.toJson()),
+     );
 
   return response;
   } catch (e) {
