@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotergs/app/core/theme/overrides/app_colors.dart';
+import 'package:spotergs/app/core/theme/app_theme.dart';
 
 class RegisterTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -55,7 +55,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             ? IconButton(
                 onPressed: _toggleObscure,
                 icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility,
-                    color: widget.textColor ?? AppColors.neutral.shade100),
+                    color: widget.textColor ?? AppTheme.textPrimaryColor),
               )
             : null);
 
@@ -67,16 +67,16 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
       },
       keyboardType: widget.keyboardType,
       validator: widget.validator,
-      style: TextStyle(color: widget.textColor ?? AppColors.neutral.shade100),
-      cursorColor: widget.cursorColor ?? AppColors.primary,
+      style: TextStyle(color: widget.textColor ?? AppTheme.textPrimaryColor),
+      cursorColor: widget.cursorColor ?? AppTheme.primaryColor,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.secondary),
+          borderSide: BorderSide(color: AppTheme.surfaceColor),
           borderRadius: BorderRadius.circular(8),
         ),
-        fillColor: AppColors.secondary.shade900,
+        fillColor: AppTheme.cardColor,
         labelText: widget.label,
-        labelStyle: TextStyle(color: AppColors.neutral.shade100),
+        labelStyle: TextStyle(color: AppTheme.textPrimaryColor),
         prefixIcon: widget.prefixIcon,
         suffixIcon: effectiveSuffix,
       ),

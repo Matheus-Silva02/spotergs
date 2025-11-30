@@ -1,57 +1,44 @@
+// file: lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:spotergs/app/core/theme/app_theme.dart';
+import 'package:spotergs/initializer.dart';
+import 'package:spotergs/routes/app_pages.dart';
+import 'package:spotergs/routes/app_routes.dart';
 
-import 'app/core/consts.dart';
-import 'app/core/theme/app_theme.dart';
-import 'app/core/translations/app_translations.dart';
-
-import 'initializer.dart';
-import 'routes/app_pages.dart';
-import 'routes/app_routes.dart';
-
-Future main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  
+
+  // Initialize services
   await Initializer.init();
-  
+
+  // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  
-  runApp(const FlutterApp());
+
+  runApp(const SpotergsApp());
 }
 
-class FlutterApp extends StatelessWidget {
-  const FlutterApp({super.key});
+class SpotergsApp extends StatelessWidget {
+  const SpotergsApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: Consts.appName,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      initialRoute: AppRoutes.login,
+      title: 'Spotergs',
+      theme: AppTheme.darkTheme,
+      themeMode: ThemeMode.dark,
+      initialRoute: AppRoutes.home,
       getPages: AppPages.pages,
-      defaultTransition: Transition.cupertinoDialog,
-      locale: const Locale('pt', 'BR'),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('pt', 'BR'),
-        Locale('en', 'US'),
-      ],
-      translations: AppTranslations(),
+      defaultTransition: Transition.cupertino,
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.noScaling,
+            textScaler: const TextScaler.linear(1.0),
           ),
           child: child!,
         );

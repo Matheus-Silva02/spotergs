@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotergs/app/core/theme/overrides/app_colors.dart';
+import 'package:spotergs/app/core/theme/app_theme.dart';
 
 class CustomButtom extends StatelessWidget{
   
@@ -9,13 +9,13 @@ class CustomButtom extends StatelessWidget{
   final VoidCallback? function;
 
   
-  const CustomButtom({super.key, this.backgroundColor = AppColors.secondary, this.text = 'Continuar', this.textStyle, this.function,});
+  const CustomButtom({super.key, this.backgroundColor = AppTheme.surfaceColor, this.text = 'Continuar', this.textStyle, this.function,});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: function,
-      splashColor: AppColors.secondary,
+      splashColor: AppTheme.surfaceColor,
       child: Container(
           width: double.infinity,
           decoration: BoxDecoration(

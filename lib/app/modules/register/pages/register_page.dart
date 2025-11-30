@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotergs/app/core/theme/overrides/app_colors.dart';
-import 'package:spotergs/app/core/theme/overrides/app_text_styles';
+import 'package:spotergs/app/core/theme/app_theme.dart';
+import 'package:spotergs/app/core/theme/app_text_styles.dart';
 import 'package:spotergs/app/modules/register/controllers/register_controller.dart';
 import 'package:spotergs/app/modules/register/widgets/register_text_field.dart';
 import 'package:spotergs/app/widgets/custom_buttom.dart';
@@ -14,27 +14,27 @@ class RegisterPage extends GetView<RegisterController>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.secondary,
+        backgroundColor: AppTheme.surfaceColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          color: AppColors.primary,
+          color: AppTheme.primaryColor,
           onPressed: () => Get.back(),
         ),
       ),
-      backgroundColor: AppColors.secondary,
+      backgroundColor: AppTheme.surfaceColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             spacing: 24,
             children: [
-              Text('Ola! Como vai?',style: AppTextStyles.titleLarge.copyWith(color: AppColors.neutral.shade100),),
-              Text('Comece criando sua conta para ouvir suas músicas favoritas!', style: AppTextStyles.secondaryHeadlineSmall.copyWith(color: AppColors.neutral.shade100),),
+              Text('Ola! Como vai?',style: AppTextStyles.titleLarge.copyWith(color: AppTheme.textPrimaryColor),),
+              Text('Comece criando sua conta para ouvir suas músicas favoritas!', style: AppTextStyles.secondaryHeadlineSmall.copyWith(color: AppTheme.textPrimaryColor),),
               RegisterTextField(
                 onValueChanged: (value) => 
                 {controller.userName.value = value},
                 label: 'Nome de usuário',
-                prefixIcon: Icon(Icons.person, color: AppColors.neutral.shade100),
+                prefixIcon: Icon(Icons.person, color: AppTheme.textPrimaryColor),
               ),
               RegisterTextField(
                 label: 'Email',
@@ -42,7 +42,7 @@ class RegisterPage extends GetView<RegisterController>
                   controller.email.value = value,
                 },
                 keyboardType: TextInputType.emailAddress,
-                prefixIcon: Icon(Icons.email, color: AppColors.neutral.shade100),
+                prefixIcon: Icon(Icons.email, color: AppTheme.textPrimaryColor),
               ),
               RegisterTextField(
                 label: 'Senha',
@@ -52,15 +52,15 @@ class RegisterPage extends GetView<RegisterController>
                 },
                 textValue: controller.password.value,
                 obscureText: true,
-                prefixIcon: Icon(Icons.lock, color: AppColors.neutral.shade100),
+                prefixIcon: Icon(Icons.lock, color: AppTheme.textPrimaryColor),
               ),
               Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 32),
                 child: CustomButtom(
                   function: controller.registerUser,
-                  backgroundColor: AppColors.primary,
-                  textStyle: AppTextStyles.titleMedium.copyWith(color: AppColors.neutral.shade200),
+                  backgroundColor: AppTheme.primaryColor,
+                  textStyle: AppTextStyles.titleMedium.copyWith(color: Colors.black),
                   
                 ),
               ),

@@ -1,25 +1,33 @@
-import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:spotergs/app/modules/register/repositories/register_repository.dart';
+// file: lib/initializer.dart
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:spotergs/app/core/services/storage_service.dart';
+import 'package:spotergs/app/core/services/api_service.dart';
+import 'package:spotergs/app/core/services/audio_service.dart';
+import 'package:spotergs/app/core/services/websocket_service.dart';
+import 'package:spotergs/app/modules/player/controllers/player_controller.dart';
+import 'package:spotergs/app/repositories/auth_repository.dart';
+import 'package:spotergs/app/repositories/music_repository.dart';
+
+/// Initializer for application dependencies
 class Initializer {
   static Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    // Inicializar repositórios
-    Get.put<RegisterRepository>(RegisterRepository());
+    // Initialize core services
+    await Get.putAsync(() => StorageService().init());
+    await Get.putAsync(() => ApiService().init());
+    await Get.putAsync(() => AudioService().init());
+    Get.put(WebSocketService());
 
-    // Aqui você pode adicionar suas inicializações de dependências
-    // Exemplo usando Get.put():
-    // Get.put<MinhaClasse>(MinhaClasse());
-    // Get.lazyPut(() => MeuServico());
+    // Initialize repositories
+    Get.put(AuthRepository());
+    Get.put(MusicRepository());
 
-    // Carregar informações do pacote
-    try {
-      await Get.putAsync(() async => PackageInfo.fromPlatform());
-    } catch (e) {
-      print('Error loading package info: $e');
-    }
+    // Initialize global controllers
+    Get.put(PlayerController(), permanent: true);
+
+    print('✅ App initialized successfully');
   }
 }

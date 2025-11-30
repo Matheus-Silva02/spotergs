@@ -38,22 +38,22 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Navigation and state management
-  get: ^4.6.6
-  # Package info
-  package_info_plus: ^8.1.1
-
-  # Storage
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-
+  get: ^4.6.5
+  
+  # HTTP client
+  dio: ^4.0.6
+  
+  # Audio player
+  just_audio: ^0.9.30
+  
+  # WebSocket
+  web_socket_channel: ^2.2.0
+  
+  # Image caching
+  cached_network_image: ^3.2.1
+  
   # Localization
   intl: ^0.19.0
-  # HTTP client for making REST requests
-  http: ^0.13.6
-  # Code generation annotations used by freezed/json_serializable
-  freezed_annotation: ^2.1.0
-  # JSON annotations used by json_serializable
-  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:

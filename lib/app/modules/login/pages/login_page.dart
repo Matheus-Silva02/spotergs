@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spotergs/app/core/theme/overrides/app_colors.dart';
-import 'package:spotergs/app/core/theme/overrides/app_text_styles';
+import 'package:spotergs/app/core/theme/app_text_styles.dart';
+import 'package:spotergs/app/core/theme/app_theme.dart';
 import 'package:spotergs/app/modules/login/controllers/login_controller.dart';
 import 'package:spotergs/app/modules/register/widgets/register_text_field.dart';
 import 'package:spotergs/app/widgets/custom_buttom.dart';
@@ -13,14 +13,14 @@ class LoginPage extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.secondary,
+        backgroundColor: AppTheme.surfaceColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          color: AppColors.primary,
+          color: AppTheme.primaryColor,
           onPressed: () => Get.back(),
         ),
       ),
-      backgroundColor: AppColors.secondary,
+      backgroundColor: AppTheme.surfaceColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -30,32 +30,32 @@ class LoginPage extends GetView<LoginController> {
               Text(
                 'Bem-vindo de volta!',
                 style: AppTextStyles.titleLarge
-                    .copyWith(color: AppColors.neutral.shade100),
+                    .copyWith(color: AppTheme.textPrimaryColor),
               ),
               Text(
                 'Faça login para continuar ouvindo suas músicas favoritas!',
                 style: AppTextStyles.secondaryHeadlineSmall
-                    .copyWith(color: AppColors.neutral.shade100),
+                    .copyWith(color: AppTheme.textPrimaryColor),
               ),
               RegisterTextField(
                 label: 'Email',
                 onValueChanged: (value) => {controller.email.value = value},
                 keyboardType: TextInputType.emailAddress,
-                prefixIcon: Icon(Icons.email, color: AppColors.neutral.shade100),
+                prefixIcon: Icon(Icons.email, color: AppTheme.textPrimaryColor),
               ),
               RegisterTextField(
                 label: 'Senha',
                 onValueChanged: (value) => {controller.password.value = value},
                 textValue: controller.password.value,
                 obscureText: true,
-                prefixIcon: Icon(Icons.lock, color: AppColors.neutral.shade100),
+                prefixIcon: Icon(Icons.lock, color: AppTheme.textPrimaryColor),
               ),
               Obx(() {
                 return controller.errorMessage.isNotEmpty
                     ? Text(
                         controller.errorMessage.value,
                         style: AppTextStyles.secondaryHeadlineSmall
-                            .copyWith(color: Colors.red),
+                            .copyWith(color: AppTheme.errorColor),
                       )
                     : const SizedBox.shrink();
               }),
@@ -67,9 +67,9 @@ class LoginPage extends GetView<LoginController> {
                     function: controller.isLoading.value
                         ? () {}
                         : controller.loginUser,
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppTheme.primaryColor,
                     textStyle: AppTextStyles.titleMedium
-                        .copyWith(color: AppColors.neutral.shade200),
+                        .copyWith(color: Colors.black),
                     text: controller.isLoading.value ? 'Carregando...' : 'Login',
                   );
                 }),
@@ -77,10 +77,20 @@ class LoginPage extends GetView<LoginController> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: CustomButtom(
-                  function: () => Get.toNamed('/register'),
-                  backgroundColor: AppColors.secondary,
+                  function: controller.loginAsGuest,
+                  backgroundColor: AppTheme.surfaceColor,
                   textStyle: AppTextStyles.titleMedium
-                      .copyWith(color: AppColors.white),
+                      .copyWith(color: AppTheme.textPrimaryColor),
+                  text: 'Entrar como convidado',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: CustomButtom(
+                  function: () => Get.toNamed('/register'),
+                  backgroundColor: AppTheme.surfaceColor,
+                  textStyle: AppTextStyles.titleMedium
+                      .copyWith(color: AppTheme.textPrimaryColor),
                   text: 'Criar conta',
 
                 ),
