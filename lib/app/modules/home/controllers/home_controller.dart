@@ -92,17 +92,36 @@ class HomeController extends GetxController {
   }
 
   /// Play track
-  void playTrack(dynamic track) {
-    final String? audioUrl = track['audioUrl'];
+  void playTrack(dynamic track) async {
     final String? trackId = track['id'];
 
-    if (audioUrl != null && trackId != null) {
-      _playerController.playTrack(track);
-      Get.toNamed('/player');
-    } else {
+    if (trackId == null || trackId.isEmpty) {
       Get.snackbar(
         'Erro',
-        'URL de áudio não disponível',
+        'ID da música não disponível',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    try {
+      final urlResponse = await _musicRepository.getAudioUrl(trackId);
+      if (urlResponse != null && urlResponse is List && urlResponse.isNotEmpty) {
+        final String audioUrl = urlResponse[0];
+        _playerController.playTrack(track, audioUrl: audioUrl);
+      
+      } else {
+        Get.snackbar(
+          'Erro',
+          'URL de áudio não disponível',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      print('Error getting audio URL: $e');
+      Get.snackbar(
+        'Erro',
+        'Falha ao obter URL de áudio',
         snackPosition: SnackPosition.BOTTOM,
       );
     }

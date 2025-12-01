@@ -205,16 +205,25 @@ class MusicRepository {
       return null;
     }
   }
-
-  /// Get tracks by theme
-  /// Returns: { "tracks": [...] }
   Future<dynamic> getTracksByTheme(String theme) async {
     try {
-      final response = await _apiService.get('/buscar_tema/$theme');
+      final response = await _apiService.get('/buscar_musica/$theme');
       print(response);
       return response;
     } catch (e) {
       print('Get tracks by theme error: $e');
+      return null;
+    }
+  }
+
+  /// Get audio URL for a track by identifier
+  /// Returns: { "url": "..." }
+  Future<dynamic> getAudioUrl(String identifier) async {
+    try {
+      final response = await _apiService.get('/get_url/$identifier');
+      return response;
+    } catch (e) {
+      print('Get audio URL error: $e');
       return null;
     }
   }

@@ -10,188 +10,201 @@ class MusicDetailsPage extends GetView<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the track from arguments
+    final music = Get.arguments;
+
+    if (music == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Detalhes da Música'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: const Center(
+          child: Text('Música não encontrada'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes da Música'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Obx(() {
-        // For demo purposes, using the current track
-        final music = controller.currentTrack.value;
-
-        if (music == null) {
-          return const Center(
-            child: Text('Nenhuma música selecionada'),
-          );
-        }
-
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Album art
-                Center(
-                  child: Container(
-                    width: 280,
-                    height: 280,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppTheme.cardColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.backgroundColor.withOpacity(0.5),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: music['imageUrl'] != null
-                        ? CachedNetworkImage(
-                            imageUrl: music['imageUrl'],
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.music_note, size: 100),
-                          )
-                        : const Icon(Icons.music_note, size: 100),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Album art
+              Center(
+                child: Container(
+                  width: 280,
+                  height: 280,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppTheme.cardColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.backgroundColor.withOpacity(0.5),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
+                  child: music['imageUrl'] != null
+                      ? CachedNetworkImage(
+                          imageUrl: music['imageUrl'],
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.music_note, size: 100),
+                        )
+                      : const Icon(Icons.music_note, size: 100),
                 ),
-                const SizedBox(height: 40),
-                // Title
-                Text(
-                  music['title'] ?? 'Sem título',
-                  style: AppTextStyles.displayMedium,
+              ),
+              const SizedBox(height: 40),
+              // Title
+              Text(
+                music['title'] ?? 'Sem título',
+                style: AppTextStyles.displayMedium,
+              ),
+              const SizedBox(height: 8),
+              // Artist
+              Text(
+                music['artist'] ?? 'Artista desconhecido',
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(height: 8),
-                // Artist
-                Text(
-                  music['artist'] ?? 'Artista desconhecido',
-                  style: AppTextStyles.titleLarge.copyWith(
-                    color: AppTheme.textSecondaryColor,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Duration and Plays
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Duração',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppTheme.textSecondaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+              ),
+              const SizedBox(height: 24),
+              // Duration and Plays
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Duração',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppTheme.textSecondaryColor,
+                          fontWeight: FontWeight.w500,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
+                      ),
+                      const SizedBox(height: 4),
+                      Obx(() {
+                        return Text(
                           '${controller.totalDuration.inMinutes}:${(controller.totalDuration.inSeconds % 60).toString().padLeft(2, '0')}',
                           style: AppTextStyles.titleMedium,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Reproduções',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppTheme.textSecondaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${music['plays'] ?? 0}',
-                          style: AppTextStyles.titleMedium,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Data',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppTheme.textSecondaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          music['releaseDate'] ?? '---',
-                          style: AppTextStyles.titleMedium,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                // Description
-                Text(
-                  'Descrição',
-                  style: AppTextStyles.titleLarge,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  music['description'] ?? 'Sem descrição disponível',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppTheme.textSecondaryColor,
-                    height: 1.5,
+                        );
+                      }),
+                    ],
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Reproduções',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppTheme.textSecondaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${music['plays'] ?? 0}',
+                        style: AppTextStyles.titleMedium,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Data',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppTheme.textSecondaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        music['releaseDate'] ?? '---',
+                        style: AppTextStyles.titleMedium,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              // Description
+              Text(
+                'Descrição',
+                style: AppTextStyles.titleLarge,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                music['description'] ?? 'Sem descrição disponível',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppTheme.textSecondaryColor,
+                  height: 1.5,
                 ),
-                const SizedBox(height: 40),
-                // Action buttons
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
+              ),
+              const SizedBox(height: 40),
+              // Action buttons
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    if (controller.currentTrack.value?['id'] == music['id']) {
                       if (controller.isPlaying) {
                         controller.pause();
                       } else {
                         controller.resume();
                       }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryColor,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
+                    } else {
+                      controller.playTrack(music);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
                     ),
-                    icon: Obx(() {
-                      return Icon(
-                        controller.isPlaying ? Icons.pause : Icons.play_arrow,
-                      );
-                    }),
-                    label: Obx(() {
-                      return Text(
-                        controller.isPlaying ? 'Pausar' : 'Tocar',
-                        style: const TextStyle(fontSize: 16),
-                      );
-                    }),
                   ),
+                  icon: Obx(() {
+                    final isCurrentTrack = controller.currentTrack.value?['id'] == music['id'];
+                    return Icon(
+                      (isCurrentTrack && controller.isPlaying) ? Icons.pause : Icons.play_arrow,
+                    );
+                  }),
+                  label: Obx(() {
+                    final isCurrentTrack = controller.currentTrack.value?['id'] == music['id'];
+                    return Text(
+                      (isCurrentTrack && controller.isPlaying) ? 'Pausar' : 'Tocar',
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  }),
                 ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite_border),
-                    label: const Text('Adicionar à Favoritos'),
-                  ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.favorite_border),
+                  label: const Text('Adicionar à Favoritos'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 // file: lib/app/core/services/audio_service.dart
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -19,6 +20,7 @@ class AudioService extends GetxService {
   // Current track info
   final currentTrackUrl = Rxn<String>();
   final currentTrackId = Rxn<String>();
+  OverlayEntry? currentOverlayEntry;
 
   Future<AudioService> init() async {
     _player = AudioPlayer();

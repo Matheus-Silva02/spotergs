@@ -59,7 +59,7 @@ class HomePage extends GetView<HomeController> {
                           padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
                             onTap: () {
-                              Get.toNamed('/music/${track['id']}');
+                              // Removed navigation to details page
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +164,8 @@ class HomePage extends GetView<HomeController> {
                         trailing: IconButton(
                           icon: const Icon(Icons.play_circle_outline),
                           onPressed: () {
-                            Get.toNamed('/player');
+                            controller.playTrack(track);
+                            _showFloatingPlayer(context, track);
                           },
                         ),
                         onTap: () {
@@ -215,116 +216,135 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  void _showPlayerModal(BuildContext context) {
+  void _showFloatingPlayer(BuildContext context, Map<String, dynamic> track) {
     final audioService = Get.find<AudioService>();
-    final url = "https://archive.org/download/1BadAppleQuarterDontSpoilTheWholeStockDTNS3440/3440%201%20Bad%20Apple%20Quarter%20Don't%20Spoil.mp3";
+    final screenHeight = MediaQuery.of(context).size.height;
+    final top = (screenHeight - 250).obs;
 
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Container(
-              color: AppTheme.surfaceColor,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 16),
-                    Icon(Icons.music_note, size: 64, color: AppTheme.primaryColor),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Bad Apple!! [Tracy vs. Astronomical Remix]',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                     Text(
-                      'Archive.org',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppTheme.textSecondaryColor,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Time display and slider
-                    Obx(() {
-                      final position = audioService.currentPosition.value;
-                      final duration = audioService.totalDuration.value;
-                      final positionMs = position.inMilliseconds.toDouble();
-                      final durationMs = duration.inMilliseconds.toDouble();
+    // Remove old overlay if exists
+    if (audioService.currentOverlayEntry != null) {
+      audioService.currentOverlayEntry!.remove();
+    }
 
-                      return Column(
-                        children: [
-                          Slider(
-                            min: 0,
-                            max: durationMs > 0 ? durationMs : 1,
-                            value: durationMs > 0 ? positionMs.clamp(0, durationMs) : 0,
-                            activeColor: AppTheme.primaryColor,
-                            inactiveColor: AppTheme.dividerColor,
-                            onChanged: (value) {
-                              audioService.seek(value.toInt());
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: AppTheme.textPrimaryColor,
-                                  ),
-                                ),
-                                Text(
-                                  '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: AppTheme.textPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                    const SizedBox(height: 24),
-                    // Play/Pause button
-                    Obx(() {
-                      return ElevatedButton(
-                        onPressed: () async {
-                          if (audioService.isPlaying.value) {
-                            await audioService.pause();
-                          } else {
-                            if (!audioService.hasAudio) {
-                              await audioService.play(url, trackId: 'bad_apple_10');
-                            } else {
-                              await audioService.resume();
-                            }
-                          }
-                        },
-                        child: Icon(
-                          audioService.isPlaying.value ? Icons.pause : Icons.play_arrow,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryColor,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
-                        ),
-                      );
-                    }),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-              ),
-            );
+    final overlay = Overlay.of(context);
+    late OverlayEntry entry;
+
+    entry = OverlayEntry(
+      builder: (context) => Obx(() => Positioned(
+        top: top.value,
+        left: 16,
+        right: 16,
+        child: GestureDetector(
+          onPanUpdate: (details) {
+            top.value += details.delta.dy;
+            top.value = top.value.clamp(50, screenHeight - 150);
           },
-        );
-      },
+          child: Material(
+            elevation: 8,
+            borderRadius: BorderRadius.circular(20),
+            color: AppTheme.surfaceColor,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      // Album art
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppTheme.cardColor,
+                        ),
+                        child: track['imageUrl'] != null
+                            ? CachedNetworkImage(
+                                imageUrl: track['imageUrl'],
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => const Icon(Icons.music_note),
+                              )
+                            : const Icon(Icons.music_note),
+                      ),
+                      const SizedBox(width: 12),
+                      // Title and artist
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              track['title'] ?? 'Sem título',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.bodyMedium,
+                            ),
+                            Text(
+                              track['artist'] ?? 'Artista desconhecido',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppTheme.textSecondaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Close button
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () async {
+                          await audioService.stop();
+                          entry.remove();
+                          audioService.currentOverlayEntry = null;
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // Slider for time
+                  Obx(() {
+                    final position = audioService.currentPosition.value;
+                    final duration = audioService.totalDuration.value;
+                    final positionMs = position.inMilliseconds.toDouble();
+                    final durationMs = duration.inMilliseconds.toDouble();
+
+                    return Slider(
+                      min: 0,
+                      max: durationMs > 0 ? durationMs : 1,
+                      value: durationMs > 0 ? positionMs.clamp(0, durationMs) : 0,
+                      activeColor: AppTheme.primaryColor,
+                      inactiveColor: AppTheme.dividerColor,
+                      onChanged: (value) {
+                        audioService.seek(value.toInt());
+                      },
+                    );
+                  }),
+                  // Play/Pause button
+                  Obx(() {
+                    return IconButton(
+                      icon: Icon(
+                        audioService.isPlaying.value ? Icons.pause : Icons.play_arrow,
+                      ),
+                      onPressed: () async {
+                        if (audioService.isPlaying.value) {
+                          await audioService.pause();
+                        } else {
+                          await audioService.resume();
+                        }
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
+        ),
+      )),
     );
+
+    audioService.currentOverlayEntry = entry;
+    overlay.insert(entry);
   }
 }

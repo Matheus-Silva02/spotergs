@@ -33,7 +33,7 @@ class PlayerController extends GetxController {
   }
 
   /// Play a track
-  Future<void> playTrack(dynamic track, {List<dynamic>? queue, int? index}) async {
+  Future<void> playTrack(dynamic track, {List<dynamic>? queue, int? index, String? audioUrl}) async {
     currentTrack.value = track;
     isFavorite.value = track['isFavorite'] ?? false;
 
@@ -42,12 +42,12 @@ class PlayerController extends GetxController {
       currentIndex.value = index ?? 0;
     }
 
-    final String? audioUrl = track['audioUrl'];
+    final String? finalAudioUrl = audioUrl ?? track['audioUrl'];
     final String? trackId = track['id'];
 
-    if (audioUrl != null) {
+    if (finalAudioUrl != null) {
       try {
-        await _audioService.play(audioUrl, trackId: trackId);
+        await _audioService.play(finalAudioUrl, trackId: trackId);
       } catch (e) {
         print('Play track error: $e');
         Get.snackbar(
