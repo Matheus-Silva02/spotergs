@@ -12,17 +12,17 @@ import 'package:spotergs/app/utils/constants.dart';
 class AuthRepository {
   final ApiService _apiService = Get.find<ApiService>();
 
-  /// Login with email and password
-  /// Returns: { "user": { ... } }
+  /// Login with username and password
+  /// Returns: { "status": "success", "message": "User logged in successfully" }
   Future<dynamic> login({
-    required String email,
+    required String name,
     required String password,
   }) async {
     try {
       final response = await _apiService.post(
         Constants.loginEndpoint,
-        data: {
-          'email': email,
+        params: {
+          'name': name,
           'password': password,
         },
       );
@@ -34,19 +34,18 @@ class AuthRepository {
   }
 
   /// Register new user
-  /// Returns: { "user": { ... } }
+  /// Returns: { "status": "success", "message": "User registered successfully" }
   Future<dynamic> register({
     required String name,
-    required String email,
     required String password,
   }) async {
     try {
       final response = await _apiService.post(
         Constants.registerEndpoint,
-        data: {
+        params: {
           'name': name,
-          'email': email,
           'password': password,
+          'password_confirm': password,
         },
       );
       return response;

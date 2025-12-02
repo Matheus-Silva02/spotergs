@@ -7,14 +7,14 @@ class LoginController extends GetxController {
 
   LoginController({required this.repository});
 
-  RxString email = ''.obs;
+  RxString name = ''.obs;
   RxString password = ''.obs;
   RxBool isLoading = false.obs;
   RxString errorMessage = ''.obs;
 
   Future<void> loginUser() async {
-    if (email.value.isEmpty || password.value.isEmpty) {
-      errorMessage.value = 'Email e senha são obrigatórios';
+    if (name.value.isEmpty || password.value.isEmpty) {
+      errorMessage.value = 'Nome e senha são obrigatórios';
       return;
     }
 
@@ -22,13 +22,17 @@ class LoginController extends GetxController {
     errorMessage.value = '';
 
     try {
-      var response = await repository.login(email: email.value, password: password.value);
-      
-      if (response != null) {
+      var response = await repository.login(
+        name: name.value,
+        password: password.value,
+      );
+
+      if (response != null && response['status'] == 'success') {
         errorMessage.value = '';
+        // Store user data if needed
         Get.offNamed('/home');
       } else {
-        errorMessage.value = 'Falha no login';
+        errorMessage.value = response?['message'] ?? 'Falha no login';
       }
     } catch (e) {
       errorMessage.value = 'Erro na conexão: ${e.toString()}';
@@ -45,9 +49,7 @@ class LoginController extends GetxController {
         title: const Text('Entrar como convidado'),
         content: TextField(
           controller: nicknameController,
-          decoration: const InputDecoration(
-            hintText: 'Digite seu nickname',
-          ),
+          decoration: const InputDecoration(hintText: 'Digite seu nickname'),
         ),
         actions: [
           TextButton(

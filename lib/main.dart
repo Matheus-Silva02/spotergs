@@ -32,7 +32,7 @@ class SpotergsApp extends StatelessWidget {
       title: 'Spotergs',
       theme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
       defaultTransition: Transition.cupertino,
       builder: (context, child) {

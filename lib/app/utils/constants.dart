@@ -7,8 +7,8 @@ class Constants {
   static const String wsUrl = 'ws://localhost:3000/ws'; // WebSocket URL
 
   // API Endpoints
-  static const String loginEndpoint = '/auth/login';
-  static const String registerEndpoint = '/auth/register';
+  static const String loginEndpoint = '/user/login';
+  static const String registerEndpoint = '/user/register';
   static const String guestLoginEndpoint = '/auth/guest';
   static const String logoutEndpoint = '/auth/logout';
   

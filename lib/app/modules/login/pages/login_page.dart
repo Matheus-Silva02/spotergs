@@ -29,19 +29,24 @@ class LoginPage extends GetView<LoginController> {
             children: [
               Text(
                 'Bem-vindo de volta!',
-                style: AppTextStyles.titleLarge
-                    .copyWith(color: AppTheme.textPrimaryColor),
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppTheme.textPrimaryColor,
+                ),
               ),
               Text(
                 'Faça login para continuar ouvindo suas músicas favoritas!',
-                style: AppTextStyles.secondaryHeadlineSmall
-                    .copyWith(color: AppTheme.textPrimaryColor),
+                style: AppTextStyles.secondaryHeadlineSmall.copyWith(
+                  color: AppTheme.textPrimaryColor,
+                ),
               ),
               RegisterTextField(
-                label: 'Email',
-                onValueChanged: (value) => {controller.email.value = value},
-                keyboardType: TextInputType.emailAddress,
-                prefixIcon: Icon(Icons.email, color: AppTheme.textPrimaryColor),
+                label: 'Nome de usuário',
+                onValueChanged: (value) => {controller.name.value = value},
+                keyboardType: TextInputType.text,
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: AppTheme.textPrimaryColor,
+                ),
               ),
               RegisterTextField(
                 label: 'Senha',
@@ -53,10 +58,11 @@ class LoginPage extends GetView<LoginController> {
               Obx(() {
                 return controller.errorMessage.isNotEmpty
                     ? Text(
-                        controller.errorMessage.value,
-                        style: AppTextStyles.secondaryHeadlineSmall
-                            .copyWith(color: AppTheme.errorColor),
-                      )
+                      controller.errorMessage.value,
+                      style: AppTextStyles.secondaryHeadlineSmall.copyWith(
+                        color: AppTheme.errorColor,
+                      ),
+                    )
                     : const SizedBox.shrink();
               }),
               Spacer(),
@@ -64,13 +70,16 @@ class LoginPage extends GetView<LoginController> {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Obx(() {
                   return CustomButtom(
-                    function: controller.isLoading.value
-                        ? () {}
-                        : controller.loginUser,
+                    function:
+                        controller.isLoading.value
+                            ? () {}
+                            : controller.loginUser,
                     backgroundColor: AppTheme.primaryColor,
-                    textStyle: AppTextStyles.titleMedium
-                        .copyWith(color: Colors.black),
-                    text: controller.isLoading.value ? 'Carregando...' : 'Login',
+                    textStyle: AppTextStyles.titleMedium.copyWith(
+                      color: Colors.black,
+                    ),
+                    text:
+                        controller.isLoading.value ? 'Carregando...' : 'Login',
                   );
                 }),
               ),
@@ -79,8 +88,9 @@ class LoginPage extends GetView<LoginController> {
                 child: CustomButtom(
                   function: controller.loginAsGuest,
                   backgroundColor: AppTheme.surfaceColor,
-                  textStyle: AppTextStyles.titleMedium
-                      .copyWith(color: AppTheme.textPrimaryColor),
+                  textStyle: AppTextStyles.titleMedium.copyWith(
+                    color: AppTheme.textPrimaryColor,
+                  ),
                   text: 'Entrar como convidado',
                 ),
               ),
@@ -89,10 +99,10 @@ class LoginPage extends GetView<LoginController> {
                 child: CustomButtom(
                   function: () => Get.toNamed('/register'),
                   backgroundColor: AppTheme.surfaceColor,
-                  textStyle: AppTextStyles.titleMedium
-                      .copyWith(color: AppTheme.textPrimaryColor),
+                  textStyle: AppTextStyles.titleMedium.copyWith(
+                    color: AppTheme.textPrimaryColor,
+                  ),
                   text: 'Criar conta',
-
                 ),
               ),
             ],
