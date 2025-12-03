@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotergs/app/repositories/music_repository.dart';
 import 'package:spotergs/app/modules/player/controllers/player_controller.dart';
+import 'package:spotergs/app/modules/favorites/controllers/favorites_controller.dart';
 import 'package:spotergs/app/utils/constants.dart';
 
 /// Controller for Search module
@@ -77,7 +78,7 @@ class SearchController extends GetxController {
             'title': track['title'] ?? 'Sem título',
             'artist': track['artist'] is List ? (track['artist'] as List).join(', ') : track['artist'] ?? 'Desconhecido',
             'imageUrl': track['banner'] ?? '',
-            'audioUrl': '',
+            'url': '',
           };
         }).toList();
         searchResults.value = tracks;
@@ -117,8 +118,8 @@ class SearchController extends GetxController {
     try {
       final urlResponse = await _musicRepository.getAudioUrl(trackId);
       if (urlResponse != null && urlResponse is List && urlResponse.isNotEmpty) {
-        final String audioUrl = urlResponse[0];
-        _playerController.playTrack(track, audioUrl: audioUrl, queue: searchResults);
+        final String url = urlResponse[0];
+        _playerController.playTrack(track, url: url, queue: searchResults);
       } else {
         Get.snackbar(
           'Erro',
@@ -137,15 +138,21 @@ class SearchController extends GetxController {
   }
 
   /// Toggle favorite
-  Future<void> toggleFavorite(String trackId, int index) async {
+  Future<void> toggleFavorite(dynamic track, int index) async {
     try {
-      final response = await _musicRepository.toggleFavorite(trackId);
-
-      if (response != null) {
-        final bool isFavorite = response['isFavorite'] ?? false;
-        searchResults[index]['isFavorite'] = isFavorite;
-        searchResults.refresh();
-      }
+      final favController = Get.find<FavoritesController>();
+      final trackId = track['id'] ?? '';
+      final musicData = {
+        'identifier': trackId,
+        'title': track['title'] ?? '',
+        'artist': track['artist'] ?? '',
+        'banner': track['imageUrl'] ?? '',
+      };
+      await favController.toggleFavorite(
+        musicIdentifier: trackId,
+        musicData: musicData,
+      );
+      searchResults.refresh();
     } catch (e) {
       print('Toggle favorite error: $e');
     }

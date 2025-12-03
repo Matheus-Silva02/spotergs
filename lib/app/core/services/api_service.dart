@@ -15,8 +15,8 @@ class ApiService extends GetxService {
     _dio = Dio(
       BaseOptions(
         baseUrl: Constants.baseUrl,
-        connectTimeout: 30000,
-        receiveTimeout: 60000, // Increased to 60 seconds
+        connectTimeout: 300000000000000,
+        receiveTimeout: 600000000000000, // Increased to 60 seconds
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

@@ -3,6 +3,7 @@
 import 'package:get/get.dart';
 import 'package:spotergs/app/core/services/audio_service.dart';
 import 'package:spotergs/app/repositories/music_repository.dart';
+import 'package:spotergs/app/modules/favorites/controllers/favorites_controller.dart';
 
 /// Controller for Player module
 /// Manages audio playback, track queue, and player state
@@ -33,7 +34,7 @@ class PlayerController extends GetxController {
   }
 
   /// Play a track
-  Future<void> playTrack(dynamic track, {List<dynamic>? queue, int? index, String? audioUrl}) async {
+  Future<void> playTrack(dynamic track, {List<dynamic>? queue, int? index, String? url}) async {
     currentTrack.value = track;
     isFavorite.value = track['isFavorite'] ?? false;
 
@@ -42,8 +43,8 @@ class PlayerController extends GetxController {
       currentIndex.value = index ?? 0;
     }
 
-    final String? finalAudioUrl = audioUrl ?? track['audioUrl'];
-    final String? trackId = track['id'];
+    final String? finalAudioUrl = url ?? track['url'];
+    final String? trackId = track['identifier'];
 
     if (finalAudioUrl != null) {
       try {
@@ -120,19 +121,27 @@ class PlayerController extends GetxController {
     if (trackId == null) return;
 
     try {
-      final response = await _musicRepository.toggleFavorite(trackId);
+      final favController = Get.find<FavoritesController>();
+      final musicData = {
+        'identifier': trackId,
+        'title': currentTrack.value['title'] ?? '',
+        'artist': currentTrack.value['artist'] ?? '',
+        'banner': currentTrack.value['imageUrl'] ?? '',
+      };
+      final isFav = favController.favoriteIds.contains(trackId);
+      await favController.toggleFavorite(
+        musicIdentifier: trackId,
+        musicData: musicData,
+      );
+      final bool favorite = !isFav;
+      isFavorite.value = favorite;
+      currentTrack.value['isFavorite'] = favorite;
 
-      if (response != null) {
-        final bool favorite = response['isFavorite'] ?? false;
-        isFavorite.value = favorite;
-        currentTrack.value['isFavorite'] = favorite;
-
-        Get.snackbar(
-          'Sucesso',
-          favorite ? 'Adicionado aos favoritos' : 'Removido dos favoritos',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      }
+      Get.snackbar(
+        'Sucesso',
+        favorite ? 'Adicionado aos favoritos' : 'Removido dos favoritos',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (e) {
       print('Toggle favorite error: $e');
       Get.snackbar(

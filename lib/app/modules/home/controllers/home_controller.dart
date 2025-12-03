@@ -3,6 +3,7 @@
 import 'package:get/get.dart';
 import 'package:spotergs/app/repositories/music_repository.dart';
 import 'package:spotergs/app/modules/player/controllers/player_controller.dart';
+import 'package:spotergs/app/modules/favorites/controllers/favorites_controller.dart';
 
 /// Controller for Home module
 /// Manages track listing, favorites, and pagination
@@ -39,7 +40,7 @@ class HomeController extends GetxController {
     }
 
     try {
-      final response = await _musicRepository.getTracksByTheme('anime');
+      final response = await _musicRepository.getTracksByTheme('Bruno-Mars');
 
       if (response != null) {
         List<dynamic> rawTracks;
@@ -56,7 +57,7 @@ class HomeController extends GetxController {
             'title': track['title'] ?? 'Sem título',
             'artist': track['artist'] is List ? (track['artist'] as List).join(', ') : track['artist'] ?? 'Desconhecido',
             'imageUrl': track['banner'] ?? '',
-            'audioUrl': '',
+            'url': '',
           };
         }).toList();
         // Assuming no pagination for theme, set hasMore to false
@@ -106,10 +107,26 @@ class HomeController extends GetxController {
 
     try {
       final urlResponse = await _musicRepository.getAudioUrl(trackId);
-      if (urlResponse != null && urlResponse is List && urlResponse.isNotEmpty) {
-        final String audioUrl = urlResponse[0];
-        _playerController.playTrack(track, audioUrl: audioUrl);
-      
+      if (urlResponse != null) {
+        String url = '';
+        
+        if (urlResponse is Map && urlResponse['url'] != null) {
+          url = urlResponse['url'];
+        } else if (urlResponse is List && urlResponse.isNotEmpty) {
+          url = urlResponse[0];
+        } else if (urlResponse is String) {
+          url = urlResponse;
+        }
+
+        if (url.isNotEmpty) {
+          _playerController.playTrack(track, url: url);
+        } else {
+          Get.snackbar(
+            'Erro',
+            'URL de áudio não disponível',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
       } else {
         Get.snackbar(
           'Erro',
@@ -128,21 +145,27 @@ class HomeController extends GetxController {
   }
 
   /// Toggle favorite
-  Future<void> toggleFavorite(String trackId, int index) async {
+  Future<void> toggleFavorite(dynamic track, int index) async {
     try {
-      final response = await _musicRepository.toggleFavorite(trackId);
+      final favController = Get.find<FavoritesController>();
+      final trackId = track['id'] ?? '';
+      final musicData = {
+        'identifier': trackId,
+        'title': track['title'] ?? '',
+        'artist': track['artist'] ?? '',
+        'banner': track['imageUrl'] ?? '',
+      };
+      await favController.toggleFavorite(
+        musicIdentifier: trackId,
+        musicData: musicData,
+      );
+      tracks.refresh();
 
-      if (response != null) {
-        final bool isFavorite = response['isFavorite'] ?? false;
-        tracks[index]['isFavorite'] = isFavorite;
-        tracks.refresh();
-
-        Get.snackbar(
-          'Sucesso',
-          isFavorite ? 'Adicionado aos favoritos' : 'Removido dos favoritos',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      }
+      Get.snackbar(
+        'Sucesso',
+        favController.isFavorite(trackId) ? 'Adicionado aos favoritos' : 'Removido dos favoritos',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (e) {
       print('Toggle favorite error: $e');
       Get.snackbar(

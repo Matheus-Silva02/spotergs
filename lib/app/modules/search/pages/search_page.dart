@@ -60,6 +60,11 @@ class SearchPage extends GetView<search_ctrl.SearchController> {
                 itemBuilder: (context, index) {
                   final music = controller.searchResults[index];
                   return ListTile(
+                    shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                    onTap: () { controller.playTrack(music);
+                        _showFloatingPlayer(context, music);},
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: Container(
@@ -80,16 +85,13 @@ class SearchPage extends GetView<search_ctrl.SearchController> {
                     ),
                     title: Text(music['title'] ?? 'Sem título'),
                     subtitle: Text(music['artist'] ?? 'Artista desconhecido'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.play_circle_outline),
-                      onPressed: () {
-                        controller.playTrack(music);
-                        _showFloatingPlayer(context, music);
-                      },
+                    trailing: Icon(
+                      (Icons.play_circle_outline),
+                      
+                       
+                      
                     ),
-                    onTap: () {
-                      // Removed navigation to details page
-                    },
+                   
                   );
                 },
               );

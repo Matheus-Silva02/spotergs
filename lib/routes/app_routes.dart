@@ -11,4 +11,7 @@ abstract class AppRoutes {
   static const String musicDetails = '/music/:id';
   static const String listenRoom = '/listen/room/:id';
   static const String profile = '/profile';
+  static const String favorites = '/favorites';
+  static const String collectionDetails = '/collection/:identifier';
 }
+

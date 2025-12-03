@@ -15,7 +15,7 @@ import 'package:spotergs/app/utils/constants.dart';
 ///   "album": "...",
 ///   "duration": 180000,
 ///   "artworkUrl": "...",
-///   "audioUrl": "...",
+///   "url": "...",
 ///   "isFavorite": false
 /// }
 /// 
@@ -82,39 +82,7 @@ class MusicRepository {
     }
   }
 
-  /// Toggle favorite status of a track
-  /// Returns: { "isFavorite": true/false }
-  Future<dynamic> toggleFavorite(String trackId) async {
-    try {
-      final endpoint = Constants.favoriteTrackEndpoint.replaceAll('{id}', trackId);
-      final response = await _apiService.post(endpoint);
-      return response;
-    } catch (e) {
-      print('Toggle favorite error: $e');
-      return null;
-    }
-  }
 
-  /// Get user's favorite tracks
-  /// Returns: { "tracks": [...] }
-  Future<dynamic> getFavoriteTracks({
-    int page = 1,
-    int pageSize = 20,
-  }) async {
-    try {
-      final response = await _apiService.get(
-        '/tracks/favorites',
-        params: {
-          'page': page,
-          'pageSize': pageSize,
-        },
-      );
-      return response;
-    } catch (e) {
-      print('Get favorite tracks error: $e');
-      return null;
-    }
-  }
 
   /// Create a new room for listening together
   /// Returns: { "roomId": "...", "hostId": "...", "trackId": "..." }
@@ -221,9 +189,36 @@ class MusicRepository {
   Future<dynamic> getAudioUrl(String identifier) async {
     try {
       final response = await _apiService.get('/get_url/$identifier');
+      print(response);
       return response;
     } catch (e) {
       print('Get audio URL error: $e');
+      return null;
+    }
+  }
+
+  /// Get popular collections
+  /// Returns: [ { "identifier": "...", "title": "...", "banner": "..." }, ... ]
+  Future<dynamic> getPopularCollections() async {
+    try {
+      final response = await _apiService.get('/buscar_tema/anime');
+      print(response);
+      return response;
+    } catch (e) {
+      print('Get popular collections error: $e');
+      return null;
+    }
+  }
+
+  /// Get collection details by identifier
+  /// Returns: [ { "identifier": "...", "title": "...", "artist": "...", "banner": "..." }, ... ]
+  Future<dynamic> getCollectionDetails(String identifier) async {
+    try {
+      final response = await _apiService.get('/get_details/$identifier');
+      print(response);
+      return response;
+    } catch (e) {
+      print('Get collection details error: $e');
       return null;
     }
   }

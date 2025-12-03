@@ -3,7 +3,7 @@
 /// Application constants
 class Constants {
   // API Configuration
-  static const String baseUrl = 'http://10.0.2.2:8000/'; // Change to your backend URL
+  static const String baseUrl = 'https://spotergs-backend-q3lw.onrender.com/'; // Change to your backend URL
   static const String wsUrl = 'ws://localhost:3000/ws'; // WebSocket URL
 
   // API Endpoints

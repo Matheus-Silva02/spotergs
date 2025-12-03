@@ -22,11 +22,12 @@ class LoginPage extends GetView<LoginController> {
       ),
       backgroundColor: AppTheme.surfaceColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            spacing: 24,
-            children: [
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              spacing: 24,
+              children: [
               Text(
                 'Bem-vindo de volta!',
                 style: AppTextStyles.titleLarge.copyWith(
@@ -65,7 +66,7 @@ class LoginPage extends GetView<LoginController> {
                     )
                     : const SizedBox.shrink();
               }),
-              Spacer(),
+              const SizedBox(height: 120),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Obx(() {
@@ -109,6 +110,6 @@ class LoginPage extends GetView<LoginController> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

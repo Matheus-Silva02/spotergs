@@ -2,6 +2,8 @@
 
 // file: lib/app/core/services/storage_service.dart
 
+import 'dart:convert';
+
 import 'package:get/get.dart';
 
 /// Service for simple storage
@@ -15,6 +17,9 @@ class StorageService extends GetxService {
   static const String _keyUserId = 'user_id';
   static const String _keyNickname = 'nickname';
   static const String _keyIsGuest = 'is_guest';
+  static const String _keyToken = 'auth_token';
+  static const String _keyUsername = 'username';
+  static const String _keyFavorites = 'favorites';
 
   Future<StorageService> init() async {
     return this;
@@ -70,5 +75,56 @@ class StorageService extends GetxService {
   // Clear all stored data (logout)
   Future<void> clearAll() async {
     _storage.clear();
+  }
+
+  // Token operations
+  Future<void> saveToken(String token) async {
+    _storage[_keyToken] = token;
+  }
+
+  Future<String?> getToken() async {
+    return _storage[_keyToken];
+  }
+
+  Future<void> deleteToken() async {
+    _storage.remove(_keyToken);
+  }
+
+  // Username operations
+  Future<void> saveUsername(String username) async {
+    _storage[_keyUsername] = username;
+  }
+
+  Future<String?> getUsername() async {
+    return _storage[_keyUsername];
+  }
+
+  Future<void> deleteUsername() async {
+    _storage.remove(_keyUsername);
+  }
+
+  // Favorites (stored as JSON string)
+  Future<void> saveFavoritesList(List<Map<String, dynamic>> list) async {
+    try {
+      _storage[_keyFavorites] = jsonEncode(list);
+    } catch (_) {}
+  }
+
+  Future<List<Map<String, dynamic>>> getFavoritesList() async {
+    final raw = _storage[_keyFavorites];
+    if (raw == null) return [];
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is List) {
+        return List<Map<String, dynamic>>.from(
+          decoded.map((e) => Map<String, dynamic>.from(e)),
+        );
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  Future<void> deleteFavoritesList() async {
+    _storage.remove(_keyFavorites);
   }
 }

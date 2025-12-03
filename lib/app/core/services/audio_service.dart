@@ -65,10 +65,11 @@ class AudioService extends GetxService {
     try {
       currentTrackUrl.value = url;
       currentTrackId.value = trackId;
-      
+      print(currentTrackUrl);
       await _player.setUrl(url);
       await _player.play();
     } catch (e) {
+      print(e);
       Get.snackbar(
         'Erro de reprodução',
         'Não foi possível reproduzir a música',

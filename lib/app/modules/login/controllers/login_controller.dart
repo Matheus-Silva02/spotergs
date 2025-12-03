@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spotergs/app/core/services/storage_service.dart';
 import 'package:spotergs/app/repositories/auth_repository.dart';
+
+RxString userToken = ''.obs;
 
 class LoginController extends GetxController {
   AuthRepository repository;
+  final StorageService _storageService = Get.find<StorageService>();
 
   LoginController({required this.repository});
 
@@ -11,6 +15,7 @@ class LoginController extends GetxController {
   RxString password = ''.obs;
   RxBool isLoading = false.obs;
   RxString errorMessage = ''.obs;
+  
 
   Future<void> loginUser() async {
     if (name.value.isEmpty || password.value.isEmpty) {
@@ -29,8 +34,18 @@ class LoginController extends GetxController {
 
       if (response != null && response['status'] == 'success') {
         errorMessage.value = '';
-        // Store user data if needed
-        Get.offNamed('/home');
+        // Save token and username
+        final token = response['token'];
+        final username = response['nome'];
+        
+        if (token != null && username != null) {
+          await _storageService.saveToken(token);
+          await _storageService.saveUsername(username);
+          userToken.value = token;
+          Get.offNamed('/home');
+        } else {
+          errorMessage.value = 'Token ou nome não recebido do servidor';
+        }
       } else {
         errorMessage.value = response?['message'] ?? 'Falha no login';
       }
