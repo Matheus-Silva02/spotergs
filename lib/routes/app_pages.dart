@@ -3,19 +3,15 @@ import 'package:spotergs/app/modules/login/bindings/login_binding.dart';
 import 'package:spotergs/app/modules/login/pages/login_page.dart';
 import 'package:spotergs/app/modules/register/bindings/register_binding.dart';
 import 'package:spotergs/app/modules/register/pages/register_page.dart';
-import 'package:spotergs/app/modules/home/bindings/home_binding.dart';
-import 'package:spotergs/app/modules/home/pages/home_page.dart';
+import 'package:spotergs/app/modules/home/bindings/main_binding.dart';
+import 'package:spotergs/app/modules/home/pages/main_page.dart';
 import 'package:spotergs/app/modules/home/bindings/collection_details_binding.dart';
 import 'package:spotergs/app/modules/home/pages/collection_details_page.dart';
-import 'package:spotergs/app/modules/search/bindings/search_binding.dart';
-import 'package:spotergs/app/modules/search/pages/search_page.dart';
 import 'package:spotergs/app/modules/player/bindings/player_binding.dart';
 import 'package:spotergs/app/modules/player/pages/player_page.dart';
 import 'package:spotergs/app/modules/player/pages/music_details_page.dart';
 import 'package:spotergs/app/modules/listen_together/bindings/listen_binding.dart';
 import 'package:spotergs/app/modules/listen_together/pages/listen_room_page.dart';
-import 'package:spotergs/app/modules/favorites/bindings/favorites_binding.dart';
-import 'package:spotergs/app/modules/favorites/pages/favorites_page.dart';
 
 import '../app/modules/splash/bindings/splash_binding.dart';
 import '../app/modules/splash/pages/splash_page.dart';
@@ -40,18 +36,13 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.home,
-      page: () => const HomePage(),
-      binding: HomeBinding(),
+      page: () => const MainPage(),
+      binding: MainBinding(),
     ),
     GetPage(
       name: AppRoutes.collectionDetails,
       page: () => const CollectionDetailsPage(),
       binding: CollectionDetailsBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.search,
-      page: () => const SearchPage(),
-      binding: SearchBinding(),
     ),
     GetPage(
       name: AppRoutes.player,
@@ -67,11 +58,6 @@ class AppPages {
       name: AppRoutes.listenRoom,
       page: () => const ListenRoomPage(),
       binding: ListenBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.favorites,
-      page: () => const FavoritesPage(),
-      binding: FavoritesBinding(),
     ),
   ];
 }

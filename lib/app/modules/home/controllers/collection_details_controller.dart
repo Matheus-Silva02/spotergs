@@ -17,7 +17,7 @@ class CollectionDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     collection = Get.arguments ?? {};
-    loadCollectionTracks();
+    Future.microtask(() => loadCollectionTracks());
   }
 
   /// Load tracks from collection
@@ -26,17 +26,38 @@ class CollectionDetailsController extends GetxController {
     try {
       final identifier = collection['identifier'] ?? '';
       if (identifier.isEmpty) {
-        Get.snackbar(
-          'Erro',
-          'Identificador da coleção não disponível',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        Future.microtask(() {
+          Get.snackbar(
+            'Erro',
+            'Identificador da coleção não disponível',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        });
+        isLoading.value = false;
         return;
       }
 
       final response = await _musicRepository.getCollectionDetails(identifier);
+      
+      if (response == null) {
+        Future.microtask(() {
+          Get.snackbar(
+            'Erro',
+            'Nenhum dado retornado pela API',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        });
+        isLoading.value = false;
+        return;
+      }
+
       List<dynamic> rawTracks;
-      rawTracks = response;
+      if (response is List) {
+        rawTracks = response;
+      } else {
+        rawTracks = [];
+      }
+
       final List<dynamic> processedTracks = rawTracks.map((track) {
           return {
             'identifier': track['identifier'] ?? '',
@@ -50,11 +71,13 @@ class CollectionDetailsController extends GetxController {
         tracks.value = processedTracks;
       
     } catch (e) {
-      Get.snackbar(
-        'Erro',
-        'Falha ao carregar músicas da coleção',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Future.microtask(() {
+        Get.snackbar(
+          'Erro',
+          'Falha ao carregar músicas da coleção',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      });
     } finally {
       isLoading.value = false;
     }

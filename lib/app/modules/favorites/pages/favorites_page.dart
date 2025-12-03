@@ -81,7 +81,7 @@ class FavoritesPage extends GetView<FavoritesController> {
                 ),
                 title: Text(favorite['title'] ?? 'Sem título'),
                 subtitle: Text(
-                  favorite['artist'] ?? favorite['description'] ?? 'Desconhecido',
+                  _getArtistText(favorite),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -111,4 +111,17 @@ class FavoritesPage extends GetView<FavoritesController> {
     );
   }
 
+  String _getArtistText(dynamic favorite) {
+    final artist = favorite['artist'];
+    
+    if (artist == null) {
+      return favorite['description'] ?? 'Desconhecido';
+    }
+    
+    if (artist is List) {
+      return artist.isNotEmpty ? artist.join(', ') : 'Desconhecido';
+    }
+    
+    return artist.toString();
+  }
 }

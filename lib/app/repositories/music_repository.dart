@@ -215,11 +215,32 @@ class MusicRepository {
   Future<dynamic> getCollectionDetails(String identifier) async {
     try {
       final response = await _apiService.get('/get_details/$identifier');
-      print(response);
-      return response;
+      print('Collection details response: $response');
+      
+      if (response == null) {
+        print('Response is null');
+        return [];
+      }
+      
+      if (response is List) {
+        return response;
+      }
+      
+      // Se for um objeto com uma chave contendo a lista
+      if (response is Map) {
+        // Tente encontrar a lista dentro do mapa
+        for (var value in response.values) {
+          if (value is List) {
+            return value;
+          }
+        }
+      }
+      
+      print('Response format not recognized: ${response.runtimeType}');
+      return [];
     } catch (e) {
       print('Get collection details error: $e');
-      return null;
+      return [];
     }
   }
 }

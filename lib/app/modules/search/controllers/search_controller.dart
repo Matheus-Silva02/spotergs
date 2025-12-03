@@ -4,14 +4,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spotergs/app/repositories/music_repository.dart';
-import 'package:spotergs/app/modules/player/controllers/player_controller.dart';
 import 'package:spotergs/app/modules/favorites/controllers/favorites_controller.dart';
 import 'package:spotergs/app/utils/constants.dart';
 
 /// Controller for Search module
 class SearchController extends GetxController {
   final MusicRepository _musicRepository = MusicRepository();
-  final PlayerController _playerController = Get.find<PlayerController>();
 
   // Text editing controller
   final searchController = TextEditingController();
@@ -74,7 +72,7 @@ class SearchController extends GetxController {
         }
         final List<dynamic> tracks = rawTracks.map((track) {
           return {
-            'id': track['identifier'] ?? '',
+            'identifier': track['identifier'] ?? '',
             'title': track['title'] ?? 'Sem título',
             'artist': track['artist'] is List ? (track['artist'] as List).join(', ') : track['artist'] ?? 'Desconhecido',
             'imageUrl': track['banner'] ?? '',
@@ -102,46 +100,13 @@ class SearchController extends GetxController {
     searchResults.clear();
   }
 
-  /// Play track
-  void playTrack(dynamic track) async {
-    final String? trackId = track['id'];
 
-    if (trackId == null || trackId.isEmpty) {
-      Get.snackbar(
-        'Erro',
-        'ID da música não disponível',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return;
-    }
-
-    try {
-      final urlResponse = await _musicRepository.getAudioUrl(trackId);
-      if (urlResponse != null && urlResponse is List && urlResponse.isNotEmpty) {
-        final String url = urlResponse[0];
-        _playerController.playTrack(track, url: url, queue: searchResults);
-      } else {
-        Get.snackbar(
-          'Erro',
-          'URL de áudio não disponível',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      }
-    } catch (e) {
-      print('Error getting audio URL: $e');
-      Get.snackbar(
-        'Erro',
-        'Falha ao obter URL de áudio',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
-  }
 
   /// Toggle favorite
   Future<void> toggleFavorite(dynamic track, int index) async {
     try {
       final favController = Get.find<FavoritesController>();
-      final trackId = track['id'] ?? '';
+      final trackId = track['identifier'] ?? '';
       final musicData = {
         'identifier': trackId,
         'title': track['title'] ?? '',
